@@ -3,7 +3,7 @@
 import type React from "react"
 
 import type { Comment } from "@/types"
-import { createContext, useContext, useState, useMemo } from "react"
+import { createContext, useContext, useState } from "react"
 
 interface CommentsContextType {
   comments: Comment[]
@@ -28,25 +28,10 @@ export function CommentsProvider({
   return <CommentsContext.Provider value={{ comments, addComment }}>{children}</CommentsContext.Provider>
 }
 
-export function useComments(initialComments?: Comment[]) {
+export function useComments() {
   const context = useContext(CommentsContext)
 
-  const localComments = useState<Comment[]>(initialComments || [])
-  const localContextValue = useMemo(() => {
-    const [comments, setComments] = localComments
-
-    const addComment = (comment: Comment) => {
-      setComments((prev) => [comment, ...prev])
-    }
-
-    return { comments, addComment }
-  }, [localComments])
-
   if (context === undefined) {
-    if (initialComments) {
-      return localContextValue
-    }
-
     throw new Error("useComments must be used within a CommentsProvider")
   }
 

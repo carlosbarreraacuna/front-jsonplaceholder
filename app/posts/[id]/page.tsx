@@ -7,6 +7,7 @@ import { notFound } from "next/navigation"
 import { CommentsList } from "@/components/posts/comments-list"
 import { CommentForm } from "@/components/posts/comment-form"
 import { Suspense } from "react"
+import { CommentsProvider } from "@/hooks/use-comments"
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
   const post = await getPostById(params.id)
@@ -54,10 +55,12 @@ export default async function PostDetailPage({ params }: { params: { id: string 
 
       <div className="space-y-6">
         <h2 className="text-2xl font-bold">Comments</h2>
-        <CommentForm postId={post.id} />
-        <Suspense fallback={<div>Loading comments...</div>}>
-          <CommentsList initialComments={comments} />
-        </Suspense>
+        <CommentsProvider initialComments={comments}>
+          <CommentForm postId={post.id} />
+          <Suspense fallback={<div>Loading comments...</div>}>
+            <CommentsList initialComments={comments} />
+          </Suspense>
+        </CommentsProvider>
       </div>
     </div>
   )

@@ -9,7 +9,8 @@ interface CommentsListProps {
 }
 
 export function CommentsList({ initialComments }: CommentsListProps) {
-  const { comments } = useComments(initialComments)
+  // Ahora useComments se usará dentro del contexto del CommentsProvider
+  const { comments } = useComments()
 
   return (
     <div className="space-y-4">
